@@ -1,15 +1,22 @@
 import * as cliReader from "./cli-reader.js";
 import * as metrics from "./retros-metrics.js";
-import * as fsOps from "./fs-ops.js";
+import * as fsOps from "./fs-operator.js";
 
-const from = cliReader.getFromValue();
-const to = cliReader.getToValue();
-const fileName = `retros-${from}-to-${to}.md`;
+try {
+	const from = cliReader.getFromValue();
+	const to = cliReader.getToValue();
+	const fileName = `retros-${from}-to-${to}.md`;
 
-console.log(`writing to ${fileName} ...`);
+	console.info(`🤓 Writing to ${fileName} ...`);
 
-const data = await metrics.toArray(from, to);
+	const list = await metrics.toList(from, to);
+	const summary = metrics.toTableSummary();
 
-fsOps.write(fileName, data.join("\n\n"), () => {
-	console.log("complete \u2713");
-});
+	const data = `${summary.join("\n\n")}\n\n${list.join("\n\n")}`;
+
+	fsOps.write(fileName, data, () => {
+		console.info("✅ Complete");
+	});
+} catch (e) {
+	console.error("💔 Oh, snapped! ", e);
+}

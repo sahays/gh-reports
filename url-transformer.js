@@ -12,10 +12,16 @@ const getPRsUrl = (source) => {
 	return `https://github.com/pulls?${queryPart}`;
 };
 
-export const toUi = (source) => {
+export const toWebUrl = (source) => {
 	if (source.indexOf("is%3Apull-request") > -1) return getPRsUrl(source);
 
 	return getIssuesUrl(source);
+};
+
+export const toRepoUrl = (source) => {
+	// from: https://api.github.com/repos/partiql/partiql-lang-kotlin
+	// to: https://github.com/partiql/partiql-lang-kotlin
+	return source.replace("api.", "").replace("/repos", "");
 };
 
 export const getRepoName = (fromUrl) => {
