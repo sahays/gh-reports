@@ -12,8 +12,13 @@ const getPRsUrl = (source) => {
 	return `https://github.com/pulls?${queryPart}`;
 };
 
-export const getPermaLink = (source) => {
+export const toUi = (source) => {
 	if (source.indexOf("is%3Apull-request") > -1) return getPRsUrl(source);
 
 	return getIssuesUrl(source);
+};
+
+export const getRepoName = (fromUrl) => {
+	const repoParts = fromUrl.split("/");
+	return repoParts[repoParts.length - 1];
 };
