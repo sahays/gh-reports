@@ -13,7 +13,7 @@ const getData = async (query, searchType, isType) => {
 	return data;
 };
 
-const getResults = async (from, to) => {
+const setResults = async (from, to) => {
 	const openedIssues = await getData(
 		queries.openedIssues(from, to),
 		"issues",
@@ -35,35 +35,23 @@ const getResults = async (from, to) => {
 	_results.push(closedPRs);
 };
 
-const list = async (from, to) => {
+const toFlattenedArray = async (from, to) => {
 	const items = [];
 
-	await getResults(from, to);
+	await setResults(from, to);
 
-	items.push(iterate(_results[0]));
-	items.push(iterate(_results[1]));
-	items.push(iterate(_results[2]));
-	items.push(iterate(_results[3]));
-	items.push(iterate(_results[4]));
+	_results.forEach((element) => {
+		items.push(toDisplayArray(element));
+	});
 
 	return items.flat();
 };
 
-export const toTableSummary = () => {
-	const result = [];
-	_results.forEach((element) => {
-		const { data, query, searchType } = element;
-		const { total_count } = data;
-		result.push(
-			mdMaker.row(total_count, query, `https://github.com/${searchType}`)
-		);
-	});
-	return result;
-};
-
-const iterate = (apiResult) => {
-	const { data } = apiResult;
+const toDisplayArray = (apiResult) => {
+	const { data, isType } = apiResult;
 	const { items } = data;
+
+	console.log(isType);
 
 	const result = [];
 
@@ -74,16 +62,25 @@ const iterate = (apiResult) => {
 			number: element.number,
 			title: element.title,
 			searchType: element.searchType,
-			isType: element.isType,
+			isType: isType,
 			itemUrl: element.html_url,
 			status: element.state,
+			mergedAt: isType == "pr" ? element.pull_request.merged_at : null,
+			isOpen: element.state == "open",
+			isClosed: element.state == "closed",
+			isMerged: element.pull_request
+				? element.pull_request.merged_at
+					? true
+					: false
+				: null,
+			isPr: isType == "pr",
 		});
 	});
 	return result;
 };
 
 export const toList = async (from, to) => {
-	const items = await list(from, to);
+	const items = await toFlattenedArray(from, to);
 	const result = [];
 	items.forEach((element) => {
 		result.push(
@@ -96,6 +93,60 @@ export const toList = async (from, to) => {
 				element.itemUrl,
 				element.status
 			)
+		);
+	});
+	return result;
+};
+
+export const toGroupedList = async (from, to) => {
+	const items = await toFlattenedArray(from, to);
+	const hits = [];
+	const inProgress = [];
+	// useful states if issues: open, closed
+	// useful states if PRs: open, merged
+	items.forEach((element) => {
+		const lineItem = mdMaker.lineItem(
+			element.repoName,
+			element.repoUrl,
+			element.number,
+			element.title,
+			element.isType,
+			element.itemUrl,
+			element.status
+		);
+		if (element.isOpen) {
+			inProgress.push(lineItem);
+		}
+		if (element.isPr && element.isMerged) {
+			hits.push(
+				mdMaker.lineItem(
+					element.repoName,
+					element.repoUrl,
+					element.number,
+					element.title,
+					element.isType,
+					element.itemUrl,
+					"merged"
+				)
+			);
+		} else if (element.status.isClosed) {
+			hits.push(lineItem);
+		}
+	});
+
+	return {
+		hits: hits,
+		inProgress: inProgress,
+	};
+};
+
+export const toTableSummary = () => {
+	const result = [];
+	_results.forEach((element) => {
+		const { data, query, searchType } = element;
+		const { total_count } = data;
+		result.push(
+			mdMaker.row(total_count, query, `https://github.com/${searchType}`)
 		);
 	});
 	return result;
