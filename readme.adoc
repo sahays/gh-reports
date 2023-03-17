@@ -1,0 +1,9 @@
+= gh-reports
+This repo provides a simple tool to query GitHub REST APIs using JavaScript (NodeJS)
+
+[source, javascript]
+----
+npm install
+node retros --from "2023-02-27" --to "2023-03-10"
+----
+Replace the date range with your own in the same format 
