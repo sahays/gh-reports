@@ -1,4 +1,4 @@
-= gh-reports
+= Overview
 
 This repo provides a simple tool to query GitHub REST APIs using JavaScript (NodeJS)
 
