@@ -8,12 +8,12 @@ try {
 	const fileName = `retros-${from}-to-${to}.md`;
 	console.info(`🤓 Writing to ${fileName} ...`);
 	const list = await metrics.toGroupedList(from, to);
-	console.log(list.hits);
-	console.log(list.inProgress);
+	const lines = metrics
+		.toList(list.hits, "Hits")
+		.concat(metrics.toList(list.inProgress, "In progress"));
 	const summary = metrics.toTableSummary();
-	const data = `${summary.join("\n\n")}\n\n## Hits:\n\n ${list.hits.join(
-		"\n\n"
-	)}\n\n## In-Progress:\n\n ${list.inProgress.join("\n\n")}`;
+	const lineBreak = "\n\n";
+	const data = `${summary.join(lineBreak)}${lineBreak}${lines.join(lineBreak)}`;
 	fsOps.write(fileName, data, () => {
 		console.info("✅ Complete");
 	});

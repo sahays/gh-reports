@@ -2,6 +2,7 @@ import * as urlTransformer from "./url-transformer.js";
 import * as queries from "./gh-queries.js";
 import * as apiCaller from "./api-caller.js";
 import * as mdMaker from "./md-maker.js";
+import { groupBy } from "underscore";
 
 const _results = [];
 
@@ -51,8 +52,6 @@ const toDisplayArray = (apiResult) => {
 	const { data, isType } = apiResult;
 	const { items } = data;
 
-	console.log(isType);
-
 	const result = [];
 
 	items.forEach((element) => {
@@ -79,64 +78,53 @@ const toDisplayArray = (apiResult) => {
 	return result;
 };
 
-export const toList = async (from, to) => {
-	const items = await toFlattenedArray(from, to);
-	const result = [];
-	items.forEach((element) => {
-		result.push(
-			mdMaker.lineItem(
-				element.repoName,
-				element.repoUrl,
-				element.number,
-				element.title,
-				element.isType,
-				element.itemUrl,
-				element.status
-			)
-		);
-	});
-	return result;
-};
-
-export const toGroupedList = async (from, to) => {
-	const items = await toFlattenedArray(from, to);
-	const hits = [];
-	const inProgress = [];
-	// useful states if issues: open, closed
-	// useful states if PRs: open, merged
-	items.forEach((element) => {
-		const lineItem = mdMaker.lineItem(
-			element.repoName,
-			element.repoUrl,
-			element.number,
-			element.title,
-			element.isType,
-			element.itemUrl,
-			element.status
-		);
-		if (element.isOpen) {
-			inProgress.push(lineItem);
-		}
-		if (element.isPr && element.isMerged) {
-			hits.push(
+export const toList = (list, h1) => {
+	const lines = [];
+	lines.push(mdMaker.h1(h1));
+	Object.keys(list).forEach((k) => {
+		lines.push(mdMaker.h2(k));
+		list[k].forEach((element) => {
+			let status = "";
+			if (element.isPr && element.isClosed) status = "merged";
+			lines.push(
 				mdMaker.lineItem(
-					element.repoName,
-					element.repoUrl,
 					element.number,
 					element.title,
 					element.isType,
 					element.itemUrl,
-					"merged"
+					element.isPr ? status : element.status
 				)
 			);
-		} else if (element.status.isClosed) {
-			hits.push(lineItem);
-		}
+		});
+	});
+	return lines;
+};
+
+// useful states if issues: open, closed
+// useful states if PRs: open, merged
+export const toGroupedList = async (from, to) => {
+	const items = await toFlattenedArray(from, to);
+	// const hits = [];
+	// const inProgress = [];
+
+	const itemsByStatus = groupBy(items, (el) => {
+		// return el.status
+		if (el.isPr && el.isMerged) return "hits";
+		if (el.isOpen) return "progress";
+		if (el.isClosed) return "hits";
+	});
+
+	const hitsByRepo = groupBy(itemsByStatus["hits"], (el) => {
+		return el.repoName;
+	});
+
+	const inProgressByRepo = groupBy(itemsByStatus["progress"], (el) => {
+		return el.repoName;
 	});
 
 	return {
-		hits: hits,
-		inProgress: inProgress,
+		hits: hitsByRepo,
+		inProgress: inProgressByRepo,
 	};
 };
 

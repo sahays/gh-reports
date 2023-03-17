@@ -1,17 +1,17 @@
-export const lineItem = (
-	repoName,
-	repoUrl,
-	number,
-	title,
-	isType,
-	itemUrl,
-	status
-) => {
-	return `${status.toUpperCase()} [${repoName}](${repoUrl}) ${title} [${
+export const lineItem = (number, title, isType, itemUrl, status) => {
+	return `${status.toUpperCase()} ${title} [${
 		isType == "issue" ? "Issue" : "PR"
 	}-${number}](${itemUrl})`;
 };
 
 export const row = (count, query, baseUrl) => {
 	return `[${count}](${baseUrl}?q=${query})`;
+};
+
+export const h1 = (title) => {
+	return `## ${title}`;
+};
+
+export const h2 = (title) => {
+	return `### ${title}`;
 };
