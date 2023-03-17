@@ -1,13 +1,14 @@
-import * as cliReader from "./cli-reader.js";
-import * as metrics from "./retros-metrics.js";
-import * as fsOps from "./fs-operator.js";
+import * as cliReader from "./utils/cli-reader.js";
+import * as metrics from "./cached-retros-metrics.js";
+import * as fsOps from "./utils/fs-operator.js";
 
 try {
 	const from = cliReader.getFromValue();
 	const to = cliReader.getToValue();
+	const noCache = cliReader.getNoCache();
 	const fileName = `retros-${from}-to-${to}.md`;
 	console.info(`🤓 Writing to ${fileName} ...`);
-	const list = await metrics.toGroupedList(from, to);
+	const list = await metrics.toGroupedList(from, to, noCache);
 	const lines = metrics
 		.toList(list.hits, "Hits")
 		.concat(metrics.toList(list.inProgress, "In progress"));
@@ -18,5 +19,5 @@ try {
 		console.info("✅ Complete");
 	});
 } catch (e) {
-	console.error("💔 Oh, snapped! ", e);
+	console.error("💔 Oh, snapped! ", e.message ? e.message : e);
 }

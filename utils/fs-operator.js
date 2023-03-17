@@ -1,7 +1,11 @@
 import fs from "fs-extra";
 
+export const exists = (fileName) => {
+	return fs.existsSync(fileName);
+};
+
 export const write = (fileName, data, done) => {
-	if (fs.existsSync(fileName)) {
+	if (exists(fileName)) {
 		fs.rename(fileName, `${Date.now()}-${fileName}`, (err) => {
 			if (err) console.error("Failed to rename file", err);
 		});
@@ -11,4 +15,12 @@ export const write = (fileName, data, done) => {
 		if (err) console.error("Failed to write", err);
 		done();
 	});
+};
+
+export const readJson = async (fileName) => {
+	return await fs.readJSON(fileName);
+};
+
+export const writeJson = async (fileName, data) => {
+	return await fs.writeJSON(fileName, data);
 };

@@ -10,7 +10,9 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"date-fns": "^2.29.3",
 		"fs-extra": "^11.1.0",
+		"object-hash": "^3.0.0",
 		"octokit": "^2.0.14",
 		"underscore": "^1.13.6"
 	}
