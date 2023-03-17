@@ -1,5 +1,5 @@
 import * as cliReader from "./utils/cli-reader.js";
-import * as metrics from "./cached-retros-metrics.js";
+import * as metrics from "./metrics/cached-retros-metrics.js";
 import * as fsOps from "./utils/fs-operator.js";
 
 try {

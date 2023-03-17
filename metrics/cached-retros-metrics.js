@@ -1,5 +1,5 @@
 import * as metrics from "./retros-metrics.js";
-import * as fs from "./utils/fs-operator.js";
+import * as fs from "../utils/fs-operator.js";
 import hash from "object-hash";
 import path from "path";
 
