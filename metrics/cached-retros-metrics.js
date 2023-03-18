@@ -7,7 +7,11 @@ export const toGroupedList = async (from, to, noCache) => {
 	if (noCache) {
 		return await metrics.toGroupedList(from, to);
 	} else {
-		const cacheFilename = path.join("./", "_cache", hash(`${from}-${to}`));
+		const cacheFilename = path.join(
+			"./",
+			"_cache",
+			"cache--" + hash(`${from}-${to}`)
+		);
 		if (fs.exists(cacheFilename)) {
 			return await fs.readJson(cacheFilename);
 		} else {

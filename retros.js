@@ -6,7 +6,7 @@ try {
 	const from = cliReader.getFromValue();
 	const to = cliReader.getToValue();
 	const noCache = cliReader.getNoCache();
-	const fileName = `retros-${from}-to-${to}.md`;
+	const fileName = `report--retros-${from}-to-${to}.md`;
 	console.info(`🤓 Writing to ${fileName} ...`);
 	const list = await metrics.toGroupedList(from, to, noCache);
 	const lines = metrics

@@ -9,7 +9,7 @@ export const write = (fileName, data, done) => {
 	if (exists(fileName)) {
 		fs.moveSync(
 			fileName,
-			path.join("./", "_cache", `${Date.now()}-${fileName}`),
+			path.join("./", "_cache", `old--${Date.now()}-${fileName}`),
 			(err) => {
 				if (err) console.error("Failed to rename file", err);
 			}

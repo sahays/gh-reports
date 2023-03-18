@@ -1,3 +1,4 @@
 node_modules
-*.md
-_cache/*
+report--*
+cache--*
+old--*

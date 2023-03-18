@@ -1,0 +1,3 @@
+= Overview
+
+The folder starts empty. As you run the reports, the app will save cache files and move old reports to this folder. **Don't delete** because it will break the app - saves me from checking and creating this folder on the first run.

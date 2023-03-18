@@ -7,7 +7,11 @@ export const queryIssuesOrPrs = async (queryString, noCache = false) => {
 	if (noCache) {
 		return await api.queryIssuesOrPrs(queryString);
 	} else {
-		const cacheFilename = path.join("./", "_cache", hash(queryString));
+		const cacheFilename = path.join(
+			"./",
+			"_cache",
+			`cache-${hash(queryString)}`
+		);
 		if (fs.exists(cacheFilename)) {
 			return await fs.readJson(cacheFilename);
 		} else {
