@@ -1,4 +1,5 @@
 import fs from "fs-extra";
+import path from "path";
 
 export const exists = (fileName) => {
 	return fs.existsSync(fileName);
@@ -6,9 +7,13 @@ export const exists = (fileName) => {
 
 export const write = (fileName, data, done) => {
 	if (exists(fileName)) {
-		fs.rename(fileName, `${Date.now()}-${fileName}`, (err) => {
-			if (err) console.error("Failed to rename file", err);
-		});
+		fs.moveSync(
+			fileName,
+			path.join("./", "_cache", `${Date.now()}-${fileName}`),
+			(err) => {
+				if (err) console.error("Failed to rename file", err);
+			}
+		);
 	}
 
 	fs.outputFile(fileName, data, (err) => {

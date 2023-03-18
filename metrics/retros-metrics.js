@@ -1,7 +1,7 @@
-import * as urlTransformer from "./utils/url-transformer.js";
-import * as queries from "./gh-queries.js";
-import * as apiCaller from "./utils/api-caller.js";
-import * as mdMaker from "./utils/md-maker.js";
+import * as urlTransformer from "../utils/url-transformer.js";
+import * as queries from "../gh-queries.js";
+import * as apiCaller from "../utils/api-caller.js";
+import * as mdMaker from "../utils/md-maker.js";
 import { groupBy } from "underscore";
 
 const _results = [];
