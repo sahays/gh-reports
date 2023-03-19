@@ -9,8 +9,8 @@ export const toGroupedList = async (from, to, noCache) => {
 	} else {
 		const cacheFilename = path.join(
 			"./",
-			"_cache",
-			"cache--" + hash(`${from}-${to}`)
+			".cache",
+			".cache-" + hash(`${from}-${to}`)
 		);
 		if (fs.exists(cacheFilename)) {
 			return await fs.readJson(cacheFilename);

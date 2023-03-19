@@ -1,5 +1,5 @@
 import * as cliReader from "./utils/cli-reader.js";
-import * as metrics from "./metrics/cached-retros-metrics.js";
+import * as metrics from "./metrics/cached-authors-metrics.js";
 import * as fsOps from "./utils/fs-operator.js";
 import path from "path";
 
@@ -7,19 +7,16 @@ try {
 	const from = cliReader.getFromValue();
 	const to = cliReader.getToValue();
 	const noCache = cliReader.getNoCache();
-	const fileName = `report-retros-${from}-to-${to}.md`;
+	const author = cliReader.getAuthorName();
+	const fileName = `report-authors-${author}-${from}-to-${to}.md`;
 	console.info(`🤓 Writing to ${fileName} ...`);
-	const list = await metrics.toGroupedList(from, to, noCache);
-	const lines = metrics
-		.toList(list.hits, "Hits")
-		.concat(metrics.toList(list.inProgress, "In progress"));
-	const summary = metrics.toTableSummary();
-	const lineBreak = "\n\n";
-	const data = `${summary.join(lineBreak)}${lineBreak}${lines.join(lineBreak)}`;
+	const summary = await metrics.toTableSummary(author, from, to, noCache);
 	fsOps.moveIfExists(
 		fileName,
 		path.join("./", ".cache", `.old-${Date.now()}-${fileName}`)
 	);
+	const lineBreak = "\n\n";
+	const data = summary.join(lineBreak);
 	fsOps.write(fileName, data, () => {
 		console.info("✅ Complete");
 	});

@@ -1,4 +1,4 @@
 node_modules
-report--*
-cache--*
-old--*
+report-*
+.cache-*
+.old-*

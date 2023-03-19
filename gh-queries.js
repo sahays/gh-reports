@@ -28,8 +28,14 @@ export const closedPRs = (from, to) => {
 	);
 };
 
-export const reviewedPRs = (author, from, to) => {
+export const authorReviewedPRs = (author, from, to) => {
 	return encodeURIComponent(
 		`is:pull-request reviewed-by:${author} -author:${author} created:${from}..${to}`
+	);
+};
+
+export const authorCreatedPRs = (author, from, to) => {
+	return encodeURIComponent(
+		`is:pull-request author:${author} created:${from}..${to} `
 	);
 };
