@@ -6,10 +6,11 @@ import path from "path";
 try {
 	const from = cliReader.getFromValue();
 	const to = cliReader.getToValue();
+	const user = cliReader.getUserName();
 	const noCache = cliReader.getNoCache();
 	const fileName = `report-retros-${from}-to-${to}.md`;
 	console.info(`🤓 Writing to ${fileName} ...`);
-	const list = await metrics.toGroupedList(from, to, noCache);
+	const list = await metrics.toGroupedList(from, to, noCache, user);
 	const lines = metrics
 		.toList(list.hits, "Hits")
 		.concat(metrics.toList(list.inProgress, "In progress"));

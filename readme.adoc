@@ -4,14 +4,14 @@ This repo provides a simple tool to query GitHub REST APIs using JavaScript (Nod
 
 [source]
 ----
-npm install && node retros --from "2023-02-27" --to "2023-03-10"
+npm install && node retros --from "2023-02-27" --to "2023-03-10" --user <organization-name>
 ----
 
-Replace the date range with your own in the same format. It generates a report about all the contributions (PRs and Issues) made within an organization between the `from` and `to` dates. It saved the report in `report-retros-<from>-to-<to>.md` file after caching it in the `.cache` folder.
+This command generates a report about all the contributions (PRs and Issues) made within an organization provided by `--user` between `from` and `to` dates. It saved the report in `report-retros-<from>-to-<to>.md` file after caching it in the `.cache` folder. Use `yyyy-mm-dd` format for date.
 
 [source]
 ----
-node retros --from "2023-02-27" --to "2023-03-10" --no-cache
+node retros --from "2023-02-27" --to "2023-03-10" --user <organization-name> --no-cache
 ----
 
 The app caches responses on disk in `_cache` folder. If you want to get fresh data, just pass the `--no-cache` flag.
@@ -20,10 +20,10 @@ The app caches responses on disk in `_cache` folder. If you want to get fresh da
 ----
 node authors --from 2023-03-10 --to 2023-03-17 --author <github-username>
 ----
-The command above generates a report summarizing the number of PRs created a nd reviewed by a contributor. It saves the report in `report-authors-<username>-<from>-to-<to>.md` file after caching it in the `.cache` folder.
+The command above generates a report summarizing the number of PRs created and reviewed by a contributor provided by `author`. It saves the report in `report-authors-<username>-<from>-to-<to>.md` file after caching it in the `.cache` folder.
 
 [source]
 ----
 node authors --from 2023-03-10 --to 2023-03-17 --author <github-username> --no-cache
 ----
-Use this command to get the fresh results (if you think they may have changed on GitHub for some reason).
+Use this command to get fresh results.

@@ -1,30 +1,30 @@
-export const openedIssues = (from, to) => {
+export const openedIssues = (from, to, user) => {
 	return encodeURIComponent(
-		`is:issue is:public created:${from}..${to} user:partiql`
+		`is:issue is:public created:${from}..${to} user:${user}`
 	);
 };
 
-export const closedIssues = (from, to) => {
+export const closedIssues = (from, to, user) => {
 	return encodeURIComponent(
-		`is:issue is:public closed:${from}..${to} user:partiql`
+		`is:issue is:public closed:${from}..${to} user:${user}`
 	);
 };
 
-export const openedPRs = (from, to) => {
+export const openedPRs = (from, to, user) => {
 	return encodeURIComponent(
-		`is:pull-request is:public created:${from}..${to} user:partiql`
+		`is:pull-request is:public created:${from}..${to} user:${user}`
 	);
 };
 
-export const mergedPRs = (from, to) => {
+export const mergedPRs = (from, to, user) => {
 	return encodeURIComponent(
-		`is:pull-request is:public merged:${from}..${to} user:partiql`
+		`is:pull-request is:public merged:${from}..${to} user:${user}`
 	);
 };
 
-export const closedPRs = (from, to) => {
+export const closedPRs = (from, to, user) => {
 	return encodeURIComponent(
-		`is:pull-request is:public closed:${from}..${to} -merged:${from}..${to} user:partiql`
+		`is:pull-request is:public closed:${from}..${to} -merged:${from}..${to} user:${user}`
 	);
 };
 

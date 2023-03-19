@@ -14,20 +14,32 @@ const getData = async (query, searchType, isType) => {
 	return data;
 };
 
-const setResults = async (from, to) => {
+const setResults = async (from, to, user) => {
 	const openedIssues = await getData(
-		queries.openedIssues(from, to),
+		queries.openedIssues(from, to, user),
 		"issues",
 		"issue"
 	);
 	const closedIssues = await getData(
-		queries.closedIssues(from, to),
+		queries.closedIssues(from, to, user),
 		"issues",
 		"issue"
 	);
-	const openedPRs = await getData(queries.openedPRs(from, to), "pulls", "pr");
-	const mergedPRs = await getData(queries.mergedPRs(from, to), "pulls", "pr");
-	const closedPRs = await getData(queries.closedPRs(from, to), "pulls", "pr");
+	const openedPRs = await getData(
+		queries.openedPRs(from, to, user),
+		"pulls",
+		"pr"
+	);
+	const mergedPRs = await getData(
+		queries.mergedPRs(from, to, user),
+		"pulls",
+		"pr"
+	);
+	const closedPRs = await getData(
+		queries.closedPRs(from, to, user),
+		"pulls",
+		"pr"
+	);
 
 	_results.push(openedIssues);
 	_results.push(closedIssues);
@@ -36,10 +48,10 @@ const setResults = async (from, to) => {
 	_results.push(closedPRs);
 };
 
-const toFlattenedArray = async (from, to) => {
+const toFlattenedArray = async (from, to, user) => {
 	const items = [];
 
-	await setResults(from, to);
+	await setResults(from, to, user);
 
 	_results.forEach((element) => {
 		items.push(toDisplayArray(element));
@@ -102,8 +114,8 @@ export const toList = (list, h1) => {
 
 // useful states if issues: open, closed
 // useful states if PRs: open, merged
-export const toGroupedList = async (from, to) => {
-	const items = await toFlattenedArray(from, to);
+export const toGroupedList = async (from, to, user) => {
+	const items = await toFlattenedArray(from, to, user);
 	// const hits = [];
 	// const inProgress = [];
 

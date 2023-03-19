@@ -39,6 +39,13 @@ export const getAuthorName = () => {
 	return author;
 };
 
+export const getUserName = () => {
+	const user = getArgValue("--user");
+	if (!user) throw "--user missing";
+
+	return user;
+};
+
 export const getNoCache = () => {
 	return argAvailable("--no-cache");
 };
