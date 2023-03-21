@@ -21,5 +21,5 @@ try {
 		console.info("✅ Complete");
 	});
 } catch (e) {
-	console.error("💔 Oh, snapped! ", e.message ? e.message : e);
+	console.error("💔 Oh, not good! ", e.message ? e.message : e);
 }
