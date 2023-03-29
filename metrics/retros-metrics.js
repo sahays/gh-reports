@@ -7,8 +7,9 @@ import { groupBy } from "underscore";
 const _results = [];
 
 const getData = async (query, searchType, isType) => {
-	const data = await apiCaller.queryIssuesOrPrs(query);
-	data.query = query;
+	const data = await apiCaller.queryIssuesOrPrs(query.query);
+	data.query = query.query;
+	data.queryLabel = query.label;
 	data.searchType = searchType;
 	data.isType = isType;
 	return data;
@@ -143,10 +144,15 @@ export const toGroupedList = async (from, to, user) => {
 export const toTableSummary = () => {
 	const result = [];
 	_results.forEach((element) => {
-		const { data, query, searchType } = element;
+		const { data, query, searchType, queryLabel } = element;
 		const { total_count } = data;
 		result.push(
-			mdMaker.row(total_count, query, `https://github.com/${searchType}`)
+			mdMaker.row(
+				total_count,
+				query,
+				`https://github.com/${searchType}`,
+				queryLabel
+			)
 		);
 	});
 	return result;

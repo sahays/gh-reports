@@ -4,8 +4,8 @@ export const lineItem = (number, title, isType, itemUrl, status) => {
 	}-${number}](${itemUrl})`;
 };
 
-export const row = (count, query, baseUrl) => {
-	return `[${count}](${baseUrl}?q=${query})`;
+export const row = (count, query, baseUrl, queryLabel) => {
+	return `${queryLabel} [${count}](${baseUrl}?q=${query})`;
 };
 
 export const h1 = (title) => {
