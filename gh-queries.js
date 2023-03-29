@@ -39,3 +39,9 @@ export const authorCreatedPRs = (author, from, to) => {
 		`is:pull-request author:${author} created:${from}..${to} `
 	);
 };
+
+export const authorMergedPRs = (author, from, to) => {
+	return encodeURIComponent(
+		`is:pull-request author:${author} merged:${from}..${to} `
+	);
+};
