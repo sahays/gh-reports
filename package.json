@@ -1,19 +1,22 @@
 {
-	"name": "gh-reports",
-	"version": "1.0.0",
-	"description": "",
-	"main": "app.js",
-	"type": "module",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"date-fns": "^2.29.3",
-		"fs-extra": "^11.1.0",
-		"object-hash": "^3.0.0",
-		"octokit": "^2.0.14",
-		"underscore": "^1.13.6"
-	}
+  "name": "gh-reports",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.29.3",
+    "fs-extra": "^11.1.0",
+    "object-hash": "^3.0.0",
+    "octokit": "^2.0.14",
+    "underscore": "^1.13.6"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
 }
