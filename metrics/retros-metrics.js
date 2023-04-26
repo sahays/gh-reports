@@ -2,7 +2,7 @@ import * as urlTransformer from "../utils/url-transformer.js";
 import * as queries from "../gh-queries.js";
 import * as apiCaller from "../utils/api-caller.js";
 import * as mdMaker from "../utils/md-maker.js";
-import { groupBy } from "underscore";
+import { groupBy, sortBy, uniq } from "underscore";
 
 const _results = [];
 
@@ -58,7 +58,23 @@ const toFlattenedArray = async (from, to, user) => {
 		items.push(toDisplayArray(element));
 	});
 
-	return items.flat();
+	const flatItems = items.flat();
+
+	let sortedItems = sortBy(flatItems, (f) => {
+		return f.number;
+	});
+
+	let uniqItems = uniq(sortedItems, (s) => {
+		return s.number;
+	});
+
+	console.log(
+		`duplicates removed: ${
+			sortedItems.length - uniqItems.length
+		} unique items: ${uniqItems.length}`
+	);
+
+	return uniqItems;
 };
 
 const toDisplayArray = (apiResult) => {
