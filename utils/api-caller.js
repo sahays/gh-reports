@@ -6,7 +6,9 @@ const octokit = new Octokit({
 });
 
 export const queryIssuesOrPrs = async (queryString) => {
-	return await octokit.request("GET /search/issues?q=" + queryString, {
+	const qs = "GET /search/issues?q=" + queryString.query;
+	console.log(qs);
+	return await octokit.request(qs, {
 		headers: {
 			"X-GitHub-Api-Version": "2022-11-28",
 		},

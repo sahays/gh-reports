@@ -23,9 +23,15 @@ const setResults = async (author, from, to) => {
 		"pulls",
 		"pr"
 	);
+	const mergedPRs = await getData(
+		queries.authorMergedPRs(author, from, to),
+		"pulls",
+		"pr"
+	);
 
 	_results.push(createdPRs);
 	_results.push(reviewedPRs);
+	_results.push(mergedPRs);
 };
 
 export const toTableSummary = async (author, from, to) => {
@@ -35,7 +41,12 @@ export const toTableSummary = async (author, from, to) => {
 		const { data, query, searchType } = element;
 		const { total_count } = data;
 		result.push(
-			mdMaker.row(total_count, query, `https://github.com/${searchType}`)
+			mdMaker.row(
+				total_count,
+				query.query,
+				`https://github.com/${searchType}`,
+				query.label
+			)
 		);
 	});
 	return result;

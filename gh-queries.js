@@ -47,7 +47,7 @@ export const authorReviewedPRs = (author, from, to) => {
 	return {
 		label: `${author} reviewed PRs`,
 		query: encodeURIComponent(
-			`type:pr reviewed-by:${author} -author:${author} created:${from}..${to}`
+			`is:pr reviewed-by:${author} -author:${author} created:${from}..${to}`
 		),
 	};
 };
@@ -55,17 +55,13 @@ export const authorReviewedPRs = (author, from, to) => {
 export const authorCreatedPRs = (author, from, to) => {
 	return {
 		label: `${author} created PRs`,
-		query: encodeURIComponent(
-			`type:pr author:${author} created:${from}..${to} `
-		),
+		query: encodeURIComponent(`is:pr author:${author} created:${from}..${to} `),
 	};
 };
 
 export const authorMergedPRs = (author, from, to) => {
 	return {
 		label: `${author} merged PRs`,
-		query: encodeURIComponent(
-			`type:pr author:${author} merged:${from}..${to} `
-		),
+		query: encodeURIComponent(`is:pr author:${author} merged:${from}..${to} `),
 	};
 };
